@@ -1,54 +1,57 @@
-�P�j
-�K�v�Ȃ��̂��C���X�g�[��
+１）
+必要なものをインストール
 tornado
 http://www.tornadoweb.org/
 
-�Q�j
-Vortex�̐ݒ�t�@�C����ҏW
+２）
+Vortexの設定ファイルを編集
 
-�f�t�H���g�ł�
-�@�EDC3��
-�@�E�eDC����LB1�A�m�[�h��2�iLB��Vortex�ő�p�j
-�@�E�e�m�[�h�ł�Tornado�̎q�v���Z�X6�N��
-�Ƃ����\�������ׂ�
-�@�P���localhost
-��ōs���Ă��܂��ݒ�ɂȂ��Ă��܂��B
+デフォルトでは
+　・DC3個
+　・各DC内にLB1個、ノードが2個（LBはVortexで代用）
+　・各ノードではTornadoの子プロセス6個起動
+という構成をすべて
+　単一のlocalhost
+上で行ってしまう設定になっています。
 
-��芸�������̐ݒ�������ɂ́A
-�@�ݒ�t�@�C���� (LB1�� + �m�[�h2��) �~ DC3�� = 9�� �R�s�[
-�@�e�ݒ�t�@�C�������ꂼ��̓��e�ɂȂ�悤�Ɉȉ���2�ɂ���1�s���g�p
-�@�@��V_TORNADO_SELF
-�@�@��V_DATA_ROOT
+取り敢えずこの設定を試すには、
+　設定ファイルを (LB1個 + ノード2個) × DC3個 = 9個 コピー
+　各設定ファイルがそれぞれの内容になるように以下の2個について1行ずつ使用
+　　→V_TORNADO_SELF
+　　→V_DATA_ROOT
 
-�R�j
-�N�����@
-�e�ݒ�t�@�C�����g�p���ċN���B
-�ݒ�t�@�C������ setting9000.py �Ƃ����
+KVSのロジックを編集する場合はdefaultディレクトリ以下のファイルをコピーして編集してください。
+defaultディレクトリのものはファイルベースのシンプルなKVSロジックになっています。
+
+３）
+起動方法
+各設定ファイルを使用して起動。
+設定ファイル名を setting9000.py として、デフォルトのロジックを使用する場合は
 >>> python vortex.py -m manager -s setting9000
-�g���q��.py�͕s�v�Ȃ��Ƃɒ��ӂ��Ă��������B
+拡張子の.pyは不要なことに注意してください。
 
-�S�j
-�f�[�^�̏������ݓ���POST�ōs���܂��B(GET�ł����삵�܂����傫�ȃf�[�^�ɂ͕s�����ł�)
-�ݒ�t�@�C���Ŏw�肵��LB�����̃A�h���X1�Ƀ��N�G�X�g���o���܂��B
-Vortex�������I�ɑ���2��LB�O���[�v�ɓ]�����܂��B
-�ڂ����� post.py ���T���v���ɂȂ�܂��B
-�������ނ����Ȃ�(�o�[�W������10�̏ꍇ�j)
+４）
+データの書き込み等はPOSTで行います。(GETでも動作しますが大きなデータには不向きです)
+設定ファイルで指定したLB相当のアドレス1個にリクエストを出します。
+Vortexが自動的に他の2個LBグループに転送します。
+詳しくは post.py がサンプルになります。
+書き込むだけなら(バージョンは10の場合）)
 >>> python post.py save 10 key1 column1 value1
-�ǂݍ��݂Ȃ�
+読み込みなら
 >>> python post.py load dummy key1 column1
 
-�T�j
-�J�X�^�}�C�Y���@
+５）
+カスタマイズ方法
 manager.py
-�Ɏ�v�ȃ��W�b�N�������Ă��܂��B
-����ɉ��̃��W�b�N���C������ꍇ��
+に主要なロジックが入っています。
+さらに奥のロジックを修正する場合は
 vortex.py
-��ҏW���Ă��������B
+を編集してください。
 
 #################################
-�EPSF���C�Z���X
-�E���GitHub���ɉ��߂ēo�^����\��ł��B
-�@�ŐV��񂪕K�v�ł����� kishimoto@s-cubism.jp �܂ł��m�点��������
-�E�g�p�ɂ��N���[����g�p�@�ɂ��Ă̎���Ȃǂ͂��󂯂ł����˂܂��B
-�@�\�߂����m��������ł��g�p���������B
+・PSFライセンス
+・後日GitHub等に改めて登録する予定です。
+　最新情報が必要でしたら kishimoto@s-cubism.jp までお知らせください
+・使用によるクレームや使用法についての質問などはお受けできかねます。
+　予めご承知頂いた上でご使用ください。
 #################################
