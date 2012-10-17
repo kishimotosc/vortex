@@ -27,7 +27,7 @@ defaultディレクトリのものはファイルベースのシンプルなKVS�
 起動方法
 各設定ファイルを使用して起動。
 設定ファイル名を setting9000.py として、デフォルトのロジックを使用する場合は
->>> python vortex.py -m manager -s setting9000
+>>> python vortex.py -m manager -f setting9000
 拡張子の.pyは不要なことに注意してください。
 
 ４）

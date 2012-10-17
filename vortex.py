@@ -211,8 +211,8 @@ def parse_options():
     parser = optparse.OptionParser()
     parser.add_option(
         "-s",
-        "--setting",
-        dest    = "setting",
+        "--file",
+        dest    = "file",
         metavar = "FILENAME",
         help    = "[required] setting file name",
     )
@@ -225,7 +225,7 @@ def parse_options():
     )
     options, args = parser.parse_args()
     
-    if options.setting == None or options.manager == None:
+    if options.file == None or options.manager == None:
         parser.print_help()
         sys.exit(0)
     return options, args
@@ -244,7 +244,7 @@ def main():
     
     ### 設定ファイルの読み込み
     global setting
-    setting = load_module(options.setting)
+    setting = load_module(options.file)
     
     ### マネージャファイルの読み込み
     global manager
